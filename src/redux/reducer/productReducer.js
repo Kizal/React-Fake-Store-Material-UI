@@ -12,4 +12,16 @@ const productReducer = (state = initialState, { type, payLoad }) => {
   }
 };
 
+export const selectedProductsReducer = (state = {}, { type, payLoad }) => {
+  console.log(type);
+  switch (type) {
+    case ActionType.SELECT_PRODUCT:
+      return { ...state, ...payLoad };
+    case ActionType.REMOVE_SELECTED_PRODUCT:
+      return {};
+    default:
+      return state;
+  }
+};
+
 export default productReducer;

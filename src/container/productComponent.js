@@ -4,15 +4,12 @@ import { useSelector } from "react-redux";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import { IconButton } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CardActions from "@material-ui/core/CardActions";
-
+import { useHistory } from "react-router-dom";
 const styles = makeStyles((theme) => ({
   card: {
     maxWidth: 300,
@@ -49,12 +46,19 @@ const styles = makeStyles((theme) => ({
 }));
 const ProductComponent = () => {
   const classes = styles();
+  const history = useHistory();
   const product = useSelector((state) => state.productReducer.product);
+  const productDetails = (title, id) => {
+    history.push(`/product-detail/${title}/${id}`);
+  };
   const renderProduct = (
     <Grid container spacing={4} justify="space-between" alignItems="center">
       {product?.map((product) => (
         <Grid item xs={6} sm={6} md={3} key={product.id}>
-          <Card className={classes.card}>
+          <Card
+            className={classes.card}
+            onClick={() => productDetails(product.title, product.id)}
+          >
             <CardMedia
               className={classes.media}
               image={product.image}

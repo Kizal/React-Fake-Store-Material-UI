@@ -17,3 +17,7 @@ export const setProduct = (products) => {
 export const selectedProduct = (product) => {
   return { type: ActionType.SELECT_PRODUCT, payLoad: product };
 };
+
+export const removeSelectedProduct = () => {
+  return { type: ActionType.REMOVE_SELECTED_PRODUCT };
+};
