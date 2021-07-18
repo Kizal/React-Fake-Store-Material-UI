@@ -4,39 +4,28 @@ import { useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import ajax from "../common/ajax";
 import "../productDetail.css";
-import { selectedProduct ,removeSelectedProduct} from "../redux/action";
+import { removeSelectedProduct, fetchProductDetail } from "../redux/action";
 
 const useStyles = makeStyles((theme) => ({
-    containerMargin:{
-        marginTop:"2rem",
-    }
-  }));
+  containerMargin: {
+    marginTop: "2rem",
+  },
+}));
 const ProductDetail = () => {
   const { id } = useParams();
-  const classes = useStyles()
+  const classes = useStyles();
   const dispatch = useDispatch();
   const { title, price, description, category, image } = useSelector(
     (state) => state.productDetail
   );
-  const fetchProductDetail = async () => {
-    await ajax("get", `products/${id}`)
-      .then((response) => {
-        dispatch(selectedProduct(response.data));
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {});
-  };
 
   useEffect(() => {
-    if (id) fetchProductDetail();
+    if (id) dispatch(fetchProductDetail(id));
 
     return () => {
-        dispatch(removeSelectedProduct());
-      };
+      dispatch(removeSelectedProduct());
+    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -144,7 +133,7 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-      </Container>
+    </Container>
   );
 };
 

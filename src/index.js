@@ -3,16 +3,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import reducerCombine from "./redux/reducer";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { store } from "./redux/store";
 
-let store = createStore(
-  reducerCombine,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
-console.log(reducerCombine);
 ReactDOM.render(
   <Provider store={store}>
   <Router>

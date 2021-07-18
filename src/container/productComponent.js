@@ -10,6 +10,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import CardActions from "@material-ui/core/CardActions";
 import { useHistory } from "react-router-dom";
+import { createProductLink } from "../config/func";
 const styles = makeStyles((theme) => ({
   card: {
     maxWidth: 300,
@@ -49,7 +50,8 @@ const ProductComponent = () => {
   const history = useHistory();
   const product = useSelector((state) => state.productReducer.product);
   const productDetails = (title, id) => {
-    history.push(`/product-detail/${title}/${id}`);
+    let productLink = createProductLink(title, id)
+    history.push(productLink);
   };
   const renderProduct = (
     <Grid container spacing={4} justify="space-between" alignItems="center">

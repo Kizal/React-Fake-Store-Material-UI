@@ -3,7 +3,7 @@ import Container from "@material-ui/core/Container";
 import { useDispatch} from "react-redux";
 import ajax from "../common/ajax";
 import { useEffect } from "react";
-import { setProduct } from "../redux/action";
+import { fetchProduct, setProduct } from "../redux/action";
 import ProductComponent from "./productComponent";
 import { makeStyles } from "@material-ui/core";
 
@@ -17,18 +17,10 @@ const ProductList = () => {
   const classes = useStyles();  
   const dispatch = useDispatch();
 
-  const fetchProduct = async () => {
-    await ajax("get", "products")
-      .then((response) => {
-        dispatch(setProduct(response.data));
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {});
-  };
+ 
   useEffect(() => {
-    fetchProduct();
+    dispatch(fetchProduct()); 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Container maxWidth="lg" className={classes.containerMargin}>
