@@ -14,21 +14,27 @@ export const setProduct = (products) => {
   return { type: ActionType.SET_PRODUCT, payLoad: products };
 };
 
+// fetchProduct is an asynchronous function that gets the product list from an API call
 export const fetchProduct = () => {
   return async (dispatch) => {
+    // Declare products variable to store response data
     let products;
+    // Use ajax function to make API request
     await ajax("get", "products")
       .then((response) => {
+        // Store API response in the products variable
         products = response.data;
       })
       .catch((error) => {
+        // Log any errors
         console.log(error);
       });
+    // Dispatch action to set the products, passing the response data
     dispatch({ type: ActionType.SET_PRODUCT, payLoad: products });
   };
 };
 
-export const fetchProductDetail = (id) => {
+export const fetchProductDetail = (id=0) => {
   return async (dispatch) => {
     let product;
     await ajax("get", `products/${id}`)

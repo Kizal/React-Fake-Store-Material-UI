@@ -1,5 +1,5 @@
 import { Grid, makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -11,7 +11,8 @@ import ShareIcon from "@material-ui/icons/Share";
 import CardActions from "@material-ui/core/CardActions";
 import { useHistory } from "react-router-dom";
 import { createProductLink } from "../config/func";
-const styles = makeStyles((theme) => ({
+
+const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: 300,
     margin: "auto",
@@ -26,10 +27,10 @@ const styles = makeStyles((theme) => ({
   },
   content: {
     textAlign: "left",
-    padding: theme.spacing * 3,
+    padding: theme.spacing(3),
   },
   divider: {
-    margin: `${theme.spacing * 3}px 0`,
+    margin: `${theme.spacing(3)}px 0`,
   },
   heading: {
     fontWeight: "bold",
@@ -45,17 +46,15 @@ const styles = makeStyles((theme) => ({
     },
   },
 }));
+
 const ProductComponent = () => {
-  const classes = styles();
+  const classes = useStyles();
   const history = useHistory();
-  const product = useSelector((state) => state.productReducer.product);
-  const productDetails = (title, id) => {
-    let productLink = createProductLink(title, id)
-    history.push(productLink);
-  };
-  const renderProduct = (
-    <Grid container spacing={4} justify="space-between" alignItems="center">
-      {product?.map((product) => (
+  const productList =
+    useSelector((state) => state.productReducer.product) || [];
+  const products = useMemo(
+    () =>
+      productList.map((product) => (
         <Grid item xs={6} sm={6} md={3} key={product.id}>
           <Card
             className={classes.card}
@@ -77,9 +76,6 @@ const ProductComponent = () => {
               <Typography className={"description-caption"} variant={"caption"}>
                 {product.description}
               </Typography>
-              {/* {faces.map(face => (
-            <Avatar className={classes.avatar} key={face} src={face} />
-          ))} */}
             </CardContent>
             <CardActions disableSpacing>
               <IconButton aria-label="add to favorites">
@@ -91,10 +87,23 @@ const ProductComponent = () => {
             </CardActions>
           </Card>
         </Grid>
-      ))}
-    </Grid>
+      )),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [classes.card, classes.content, classes.media, history, productList]
   );
-  return <>{renderProduct}</>;
+
+  const productDetails = (title, id) => {
+    let productLink = createProductLink(title, id);
+    history.push(productLink);
+  };
+
+  return (
+    <>
+      <Grid container spacing={4} justify="space-between" alignItems="center">
+        {products}
+      </Grid>
+    </>
+  );
 };
 
 export default ProductComponent;
